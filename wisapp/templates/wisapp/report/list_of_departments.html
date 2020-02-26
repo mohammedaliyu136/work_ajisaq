@@ -1,0 +1,53 @@
+{% load static i18n humanize %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/report.min.css' %}">
+  </head>
+  <body>
+    <div class="outer">
+      <div class="logo">
+        <span class="rletter">W</span>
+        <span class="">R</span>
+        <span class="rletter">M</span>
+        <span class="">S</span>
+      </div>
+      <div>
+        <center>
+          <p class="brand">AJISAQ LIMITED</p>
+          <p class="brand-subtitle">Workers Record Management System</p>
+          <p class="report-title">LIST OF DEPARTMENTS</p>
+        </center>
+      </div>
+    </div>
+      <div class='wrapper'>
+        <table>
+          <tr class="mdb-color darken-3 headers white-text">
+            <th>#</th>
+             <th>Department Name</th>
+             <th>Department Code</th>
+             <th>Department Head</th>
+          </tr>
+          {% for department in departments %}
+            <tr class="row">
+            	<td class="row-data">{{ forloop.counter }}</td>
+            	<td class="row-data">{{ department.name }}</td>
+            	<td class="row-data">{{ department.dept_id }}</td>
+              <td class="row-data">{{ department.hod }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="8">
+                No departments found
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+    </div>
+    <div class="summary">
+      <legend>Summary:</legend>
+        <span>Total number of Departments: <b>{{ departments.count }}</b></span><br>
+    </div>
+    <p style="page-break-after: always"/>
+  </body>
+</html>

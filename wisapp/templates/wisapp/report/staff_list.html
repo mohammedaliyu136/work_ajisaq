@@ -1,0 +1,65 @@
+{% load static i18n humanize %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/report.min.css' %}">
+  </head>
+  <body>
+    <div class="outer">
+      <div class="logo">
+        <span class="rletter">W</span>
+        <span class="">R</span>
+        <span class="rletter">M</span>
+        <span class="">S</span>
+      </div>
+      <div>
+        <center>
+          <p class="brand">AJISAQ LIMITED</p>
+          <p class="brand-subtitle">Workers Record Management System</p>
+          <p class="report-title">{{file_name}}</p>
+        </center>
+      </div>
+    </div>
+    <div class='wrapper'>
+      <table class="table table-bordered table-responsive-md table-striped text-center">
+    <tr class="mdb-color darken-3 white-text">
+      <th class="text-center">#</th>
+       <th class="text-center">Fullname</th>
+       <th class="text-center">Picture</th>
+       <th class="text-center">Phone No.</th>
+       <th class="text-center">Workplace</th>
+       <th class="text-center">Department</th>
+       <th class="text-center">Employed</th>
+       <th class="text-center">Retirement In</th>
+    </tr>
+    {% for staff in staff_list %}
+    <tr>
+      <td class="pt-3-half text-center" contenteditable="false">
+          <a href="">{{ forloop.counter }}</a>
+       </td>
+       <td class="pt-3-half text-center" name="{{ staff.first_name }}" contenteditable="false">
+          <a href="#">{{ staff.get_full_name }}</a>
+       </td>
+       <td class="pt-3-half" name="{{ staff.first_name }}" contenteditable="false">
+          <img width="50px" src="{{ staff.get_picture }}">
+       </td>
+       <td class="pt-3-half" contenteditable="false">{{ staff.phone_number }}</td>
+       <td class="pt-3-half" contenteditable="false">{{ staff.place_of_work }}</td>
+       <td class="pt-3-half" contenteditable="false">{{ staff.department }}</td>
+       <td class="pt-3-half" contenteditable="false">{{ staff.date_of_employment|naturalday }}</td>
+       <td class="pt-3-half" contenteditable="false">{{ staff.date_of_retirement|naturaltime }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+       <td colspan=8>No data available</td>
+    </tr>
+    {% endfor %}
+ </table>
+    </div>
+    <div class="summary">
+      <legend>Summary:</legend>
+        <span>Total Number of staff: <b>{{ staff_list.count }}</b></span><br>
+    </div>
+    <p style="page-break-after: always"/>
+  </body>
+</html>

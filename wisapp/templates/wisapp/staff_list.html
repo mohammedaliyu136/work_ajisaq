@@ -1,0 +1,196 @@
+{%  extends 'base.html' %}
+{% load humanize %}
+{% block main %}
+<!-- Heading -->
+  <div class="card mb-4 wow fadeIn">
+      <!--Card content-->
+      <div class="card-body d-sm-flex justify-content-between">
+
+          <h6 class="mb-2 mb-sm-0 pt-1">
+              <a href="{% url 'home_page' %}">Home Page</a> /
+              <a href="#">Staff</a>
+          </h6>
+      </div>
+      <div hidden id="loader" class="progress md-progress primary-color-dark">
+	      <div class="indeterminate">
+	      </div>
+      </div>
+  </div>
+  <!-- Heading -->
+  	<!-- Editable table -->
+	<div class="card">
+	<h6 class="card-header text-center font-weight-bold text-uppercase py-4">Staff List
+	</h6>
+		<div class="container">
+		  <div class="row">
+		    <div class="col-md-6">
+		    	<a class="white-text" href="{% url 'staff_add' %}">
+				    <span data-toggle="tooltip" title="Add Staff" class="btn btn-primary w-30 p-3">ADD Staff</span>
+				</a>
+				<!-- Small split button group -->
+				<div class="btn-group">
+				  <a type="button" class="btn btn-danger report" target="_blank" href="">PRINT STAFF LIST REPORT</a>
+				  <button type="button" class="btn btn-danger btn-sm dropdown-toggle px-4" data-toggle="dropdown"
+				    aria-haspopup="true" aria-expanded="false">
+				    <span class="sr-only">Toggle Dropdown</span>
+				  </button>
+				  <div class="dropdown-menu">
+				    <a id="staff_list_report" class="dropdown-item report btn btn-primary" target="_blank" href="/report/staff/list?department=1&status=Active">All STAFF LIST</a>
+				     <a id="retired_staff_list_report" class="dropdown-item btn btn-primary bank" target="_blank" href="#">RETIRED STAFF</a>
+				      <a id="active_staff_list_report" class="dropdown-item btn btn-primary bank" target="_blank" href="#">ACTIVE STAFF</a>
+				      <a class="dropdown-item btn btn-primary bank" target="_blank" href="#">ALL DEPARTMENTS</a>
+				  </div>
+				</div>
+
+				<!-- Small button group -->
+
+		    </div>
+		    <div class="col-md-2"><small id="selected-department"></small></div>
+		    <div class="col-md-4">
+		    	<div class="dropdown">
+	    			<button class="btn btn-info dropdown-toggle float-right" type="button" id="dropdownMenu3" data-toggle="dropdown"
+		    			aria-haspopup="true" aria-expanded="false">
+		    			Select A Department
+		    		</button>
+
+					<div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+	    				<h6 class="dropdown-header">Departments</h6>
+	    				{% for department in departments %}
+			    			<a target-url="{% url 'get_staff_list' %}" data-toggle="tooltip" title="{{ department.name }}" department-report-url="{% url 'staff_pdf_report' department=department.id %}" staff-bank-report-url="{% url 'staff_bank_pdf_report' department=department.id %}" class="dropdown-item selected-item" selected-item="{{ department.id }}">
+			    			{{ department.name }} ({{ department.dept_id }})
+			    			</a>
+	    				{% endfor %}
+					</div>
+
+				</div>
+			</div>
+
+			<!-- new code -->
+		    <div class="col-md-4">
+		    	<div class="dropdown">
+	    			<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown"
+		    			aria-haspopup="true" aria-expanded="false">
+		    			Select Employment Status
+		    		</button>
+
+					<div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+	    				<h6 class="dropdown-header">Employment Status</h6>
+			    			<a target-url="{% url 'get_staff_list' %}" title="all" class="dropdown-item selected-item-status">All Staff</a>
+			    			<a target-url="{% url 'get_staff_list' %}" title="Active" class="dropdown-item selected-item-status">Active Staff</a>
+			    			<a target-url="{% url 'get_staff_list' %}" title="Retired" class="dropdown-item selected-item-status">Retired Staff</a>
+					</div>
+
+				</div>
+			</div>
+			<!-- end of new code -->
+		  </div>
+		</div>
+
+	  <div class="card-body">
+        <div id="table" class="students_body table-editable">
+        </div>
+	  </div>
+	</div>
+  <hr />
+  <div class="row wow fadeIn"></div>
+  {% include 'wisapp/modal.html' %}
+{% endblock %}
+
+{% block script %}
+	<script>
+		$(document).ready(()=>{
+			$('.selected-item').on('click', ()=>{
+				var item = event.currentTarget;
+				const selectedItem = 
+					item.getAttribute('selected-item');
+				
+				const url = item.getAttribute('target-url');
+
+				var selectedDepartment = `Department: ${item.getAttribute('title')}`;
+				var selectedDepartmentUrl = item.getAttribute('department-report-url');
+				var bankDetailPDFUlr = item.getAttribute('staff-bank-report-url');
+				//---new code
+				localStorage.setItem("dept_id", selectedItem);
+				$("#staff_list_report").attr("href", "/report/staff/list?department="+selectedItem+"&status=all");
+				$("#retired_staff_list_report").attr("href", "/report/staff/list?department="+selectedItem+"&status=Retired");
+				$("#active_staff_list_report").attr("href", "/report/staff/list?department="+selectedItem+"&status=Active");
+				localStorage.setItem("selectedDepartment", selectedDepartment);
+				console.log(url+"?department="+selectedItem+"&status=Active");
+				//---end of new code
+
+				//$(".report").attr('href', selectedDepartmentUrl);
+				//$(".bank").attr('href', bankDetailPDFUlr);
+				
+				$.ajax({
+					url: url,
+					data: {
+						'dept_id': selectedItem,
+						'employment_status': 'all',
+					},
+
+					beforeSend: ()=>{
+						$("#loader").removeAttr('hidden');
+						$("#selected-department").text(selectedDepartment);
+					},
+
+					complete: ()=>{
+						$("#loader").attr('hidden', true);
+					},
+
+					success: (data)=>{
+						$("#table").html(data);
+					},
+
+					error: (error_data)=>{
+						console.log(`There\'s an error: ${error_data}`)
+					} 
+				});
+			});
+
+			$('.selected-item-status').on('click', ()=>{
+				var item = event.currentTarget;
+				const selectedItem = 
+					item.getAttribute('title');
+				
+				const url = item.getAttribute('target-url');
+
+				var selectedStatus = `Employment Status: ${item.getAttribute('title')}`;
+				//---new code
+				//localStorage.getItem("selectedStatus", selectedStatus);
+				if(localStorage.getItem("dept_id")){
+					dept_id=localStorage.getItem("dept_id", selectedItem);
+				}else{
+					dept_id="1";
+				}
+				console.log(url+"?department="+dept_id+"&status="+item.getAttribute('title'));
+				//---end of new code
+
+				
+				$.ajax({
+					url: url,
+					data: {
+						'dept_id': dept_id,
+						'employment_status': selectedItem,
+					},
+
+					beforeSend: ()=>{
+						$("#loader").removeAttr('hidden');
+						$("#selected-department").text(localStorage.getItem("selectedDepartment"));
+					},
+
+					complete: ()=>{
+						$("#loader").attr('hidden', true);
+					},
+
+					success: (data)=>{
+						$("#table").html(data);
+					},
+
+					error: (error_data)=>{
+						console.log(`There\'s an error: ${error_data}`)
+					} 
+				});
+			});
+		});
+	</script>
+{% endblock %}

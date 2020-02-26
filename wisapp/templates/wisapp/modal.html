@@ -1,0 +1,171 @@
+    <!--Modal: setup new session Form-->
+   <!--Modal: setup new session Form-->
+    <form method="post" action="{% url 'department_add' %}">{% csrf_token %}
+        <div class="modal fade" id="newDept" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+              <!--Header-->
+              <div class="modal-header mdb-color darken-3 white-text">
+                <h4 class="">ADD A DEPARTMENT</h4>
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <!--Body-->
+              <div class="modal-body mb-0">
+              <div class="md-form form-sm">
+                <input name="dept_name" type="text" id="inputSMEx" class="form-control form-control-sm">
+                <label for="inputSMEx">Department Name</label>
+              </div>
+
+               <div class="md-form form-sm">
+                <input name="dept_code" type="text" id="inputSMEx" class="form-control form-control-sm">
+                <label for="inputSMEx">Department Code</label>
+              </div>
+
+              <div class="md-form form-sm">
+                <input name="dept_head" type="text" id="inputSMEx" class="form-control form-control-sm">
+                <label for="inputSMEx">Department Head</label>
+              </div>
+
+                <div class="text-center mt-1-half">
+                  <input type="submit" name="submit" class="btn btn-info mb-1 fas fa-check ml-1">
+                </div>
+              </div>
+            </div>
+            <!--/.Content-->
+          </div>
+        </div>
+    </form>
+        <!--Modal: Subscription From-->
+
+
+    <!--Modal: setup new session Form-->
+   <!--Modal: setup new session Form-->
+    <form method="post" action="{% url 'department_delete' %}">{% csrf_token %}
+        <div class="modal fade" id="deleteDept" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+              <!--Header-->
+              <div class="modal-header mdb-color darken-3 white-text">
+                <h4 class="">DELETE DEPARTMENT</h4>
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <!--Body-->
+              <div class="modal-body mb-0">
+              <div class="md-form form-sm">
+                <p>This action <b>cannot</b> be undone. This will permanently delete the department, all employees under this department will be affected.
+                  <br/><br/>
+                Please type <b id="dept_name"></b> to confirm.</p>
+                <input name="dept_name_id" type="hidden" id="inputIDDeptDelete" class="form-control form-control-sm">
+                <input name="dept_name" type="text" id="inputDeptDelete" class="form-control form-control-sm" onkeyup="check()">
+              </div>
+
+                <div class="text-center mt-1-half">
+                  <input id="inputDeptDeleteBtn" type="submit" value="DELETE" name="submit" class="btn btn-danger mb-1 fas fa-check ml-1" disabled>
+                </div>
+                <script type="text/javascript">
+                  function check(){
+                    if($('#inputDeptDelete').val()==$('#dept_name').text()){
+                      $('#inputDeptDeleteBtn').prop('disabled', false);
+                    }else{
+                      $('#inputDeptDeleteBtn').prop('disabled', true);
+                    }
+                  }
+                </script>
+              </div>
+            </div>
+            <!--/.Content-->
+          </div>
+        </div>
+    </form>
+        <!--Modal: Subscription From-->
+
+
+        <!--Modal: setup new session Form-->
+   <!--Modal: setup new session Form-->
+    <form method="post" action="{% url 'department_add' %}">{% csrf_token %}
+        <div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+              <!--Header-->
+              <div class="modal-header mdb-color darken-3 white-text">
+                <h4 class="">DELETE USER</h4>
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <!--Body-->
+              <div class="modal-body mb-0">
+              <div class="md-form form-sm">
+                <input name="dept_name" type="text" value=data-id id="inputSMExuuu" class="form-control form-control-sm">
+                <label for="inputSMEx">Employee Name</label>
+              </div>
+
+                <div class="text-center mt-1-half">
+                  <input type="submit" value="DELETE" name="submit" class="btn btn-danger mb-1 fas fa-check ml-1">
+                </div>
+              </div>
+            </div>
+            <!--/.Content-->
+          </div>
+        </div>
+    </form>
+        <!--Modal: Subscription From-->
+
+
+ <!--Modal: setup new session Form-->
+   <!--Modal: setup new session Form-->
+    <form method="post" action="{% url 'department_update' %}">{% csrf_token %}
+        <div class="modal fade" id="editDept" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+              <!--Header-->
+              <div class="modal-header mdb-color darken-3 white-text">
+                <h4 class="">EDIT DEPARTMENT</h4>
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <!--Body-->
+              <div class="modal-body mb-0">
+              <div class="md-form form-sm">
+                <input name="dept_name_id" type="text" id="inputEditDepartmentID" class="form-control form-control-sm" hidden>
+                <input name="dept_name" type="text" id="inputEditDepartmentName" class="form-control form-control-sm">
+                <label for="inputEditDepartmentName">Department Name</label>
+              </div>
+
+               <div class="md-form form-sm">
+                <input name="dept_code" type="text" id="inputEditDepartmentCode" class="form-control form-control-sm">
+                <label for="inputEditDepartmentCode">Department Code</label>
+              </div>
+
+              <div class="md-form form-sm">
+                <input name="dept_head" type="text" id="inputEditDepartmentHead" class="form-control form-control-sm">
+                <label for="inputEditDepartmentHead">Department Head</label>
+              </div>
+
+                <div class="text-center mt-1-half">
+                  <input type="submit" value="UPDATE" name="submit" class="btn btn-info mb-1 fas fa-check ml-1">
+                </div>
+              </div>
+            </div>
+            <!--/.Content-->
+          </div>
+        </div>
+    </form>
+        <!--Modal: Subscription From-->
